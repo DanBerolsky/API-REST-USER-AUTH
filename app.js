@@ -13,17 +13,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'pug');
 
 const login = require('./src/v1/routes/login')
-const singup = require('./src/v1/routes/singup')
+const signup = require('./src/v1/routes/signup')
 const profile = require("./src/v1/routes/profile")
 app.use('/v1/login', login)
-app.use('/v1/singup', singup)
+app.use('/v1/signup', signup)
 app.use('/v1/profile', profile)
 
-/*
-app.get('/',(_,res)=>{
+
+/* app.get('/',(_,res)=>{
     res.send('index')
 })
-*/
+ */
 app.listen(PORT,()=>{
     console.log("http://localhost:"+PORT)
 })

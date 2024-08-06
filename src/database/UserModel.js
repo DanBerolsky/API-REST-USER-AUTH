@@ -13,7 +13,6 @@ function findByUserId(userId){
 }
 
 function checkEmailPwd(user){
-    console.log(user);
     if (!user.email || !user.pwd) throw new Error(401)
     //console.log(`tiene email ${user.email} y pass ${user.pwd}`);
     const email = user.email

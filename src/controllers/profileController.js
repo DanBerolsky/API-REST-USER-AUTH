@@ -1,6 +1,7 @@
 const {findByUserId} = require('../database/UserModel')
 const getProfile = (req, res) =>
 {
+    console.log(req.session);
     if(!req.session || !req.session.sessionId)return res.sendStatus(401)
     const sessionId = req.session.sessionId
     const user = findByUserId(sessionId)

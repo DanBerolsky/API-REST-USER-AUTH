@@ -1,2 +1,14 @@
-{"users":[{"email":"hello@hello.com","pwd":"hello","sessionId":"pZZtolJdQwIOEJfE0Bb0G"},
-{"email":"hola@hola.com","pwd":"hola","sessionId":"2_L3nH7DxqZj4VDbxgTnl"}]}
+{
+  "users": [
+    {
+      "email": "hello@hello.com",
+      "pwd": "hello",
+      "sessionId": "pZZtolJdQwIOEJfE0Bb0G"
+    },
+    {
+      "email": "hola@hola.com",
+      "pwd": "hola",
+      "sessionId": "2_L3nH7DxqZj4VDbxgTnl"
+    }
+  ]
+}
