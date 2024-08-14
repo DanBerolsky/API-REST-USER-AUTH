@@ -20,10 +20,10 @@ app.use('/v1/signup', signup)
 app.use('/v1/profile', profile)
 
 
-/* app.get('/',(_,res)=>{
-    res.send('index')
+app.get('/',(_,res)=>{
+    res.redirect('/v1/login')
 })
- */
+
 app.listen(PORT,()=>{
     console.log("http://localhost:"+PORT)
 })

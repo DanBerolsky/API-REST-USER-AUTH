@@ -2,12 +2,12 @@
   "users": [
     {
       "email": "hello@hello.com",
-      "pwd": "hello",
+      "pwd": "Hello12345",
       "sessionId": "pZZtolJdQwIOEJfE0Bb0G"
     },
     {
       "email": "hola@hola.com",
-      "pwd": "hola",
+      "pwd": "Hola12345",
       "sessionId": "2_L3nH7DxqZj4VDbxgTnl"
     }
   ]
