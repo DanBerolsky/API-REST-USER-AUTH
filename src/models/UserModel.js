@@ -1,5 +1,4 @@
-const { users } = require("../database/db.json");
-const db = require("../database/db.json");
+const  users  = require("../database/db.json");
 const fs = require("fs");
 
 function findByUserId(userId) {
@@ -14,26 +13,28 @@ function findByUserId(userId) {
   return found;
 }
 
-function checkEmailPwd(user) {
+function isUserAuthenticated(user) {
   const email = user.email;
   const password = user.pwd;
   let i = 0;
-  let sessionId = "";
+  let authenticated  = false;
+  console.log(users);
+  
   while (i < users.length) {
     if (users[i]["email"] === email) {
       if (users[i]["pwd"] === password) {
-        sessionId = users[i]["sessionId"];
+        authenticated  = true;
       }
       i = users.length;
     }
     i++;
   }
-  return sessionId;
+  return authenticated ;
 }
 
-function addUser(newUser, sessionId) {
-  db["users"].push({ ...newUser, sessionId: sessionId });
-  jsonStr = JSON.stringify(db);
+function addUser(newUser) {
+  users.push({ ...newUser, sessionId: "" });
+  let jsonStr = JSON.stringify(users);
   fs.writeFile("../API-REST/src/database/db.json", jsonStr, (err) => {
     if (err) {
       throw err;
@@ -53,9 +54,27 @@ function findByEmail(users, email) {
   return found;
 }
 
+function saveSession(newUser){
+  let i = users.find((user,index)=>{
+    if (user.email===newUser.email && user.pwd===newUser.pwd) {
+      users[index] = {...user,sessionId:newUser.sessionId}
+      return {...user,sessionId:newUser.sessionId}
+    }
+  })
+  console.log(i);
+  
+  let jsonStr = JSON.stringify(users);
+  fs.writeFile("../API-REST/src/database/db.json", jsonStr, (err) => {
+    if (err) {
+      throw err;
+    }
+  });
+}
+
 module.exports = {
   findByUserId,
-  checkEmailPwd,
+  isUserAuthenticated,
   addUser,
   findByEmail,
+  saveSession
 };
