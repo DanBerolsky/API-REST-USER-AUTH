@@ -1,6 +1,6 @@
-const db = require("../database/db.json");
+const db = require("../../../database/db.json");
 const path = require("path");
-const { findByEmail, addUser } = require("../models/UserModel");
+const { findByEmail, addUser } = require("../../../models/UserModel");
 
 async function signupAction(req, res) {
   const postUser = req.body;
@@ -18,7 +18,7 @@ async function signupAction(req, res) {
 
 function signupForm(_, res) {
   res.render("index", () => {
-    res.sendFile(path.resolve(__dirname, "../public/signup.html"));
+    res.sendFile(path.resolve(__dirname, "../../../public/signup.html"));
   });
 }
 

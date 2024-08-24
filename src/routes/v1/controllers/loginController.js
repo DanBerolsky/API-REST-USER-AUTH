@@ -1,4 +1,4 @@
-const { isUserAuthenticated,saveSession } = require("../models/UserModel");
+const { isUserAuthenticated, updateUser } = require("../../../models/UserModel");
 const path = require("path");
 var { nanoid } = require("nanoid");
 
@@ -8,7 +8,7 @@ function login(req, res) {
     req.session.sessionId = newSessionId;
     // Guarda la nueva sesión en la base de datos
     let newUser={...req.body, sessionId:newSessionId}
-    saveSession(newUser)
+    updateUser(newUser)
     const fiveSeconds = 5000;
     req.session.cookie.expires = new Date(Date.now() + fiveSeconds);
     req.session.cookie.maxAge = fiveSeconds;
@@ -19,7 +19,7 @@ function login(req, res) {
 
 function getLogin(_, res) {
   res.render("index", () => {
-    res.sendFile(path.resolve(__dirname, "../public/login.html"));
+    res.sendFile(path.resolve(__dirname, "../../../public/login.html"));
   });
 }
 

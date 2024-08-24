@@ -18,8 +18,6 @@ function isUserAuthenticated(user) {
   const password = user.pwd;
   let i = 0;
   let authenticated  = false;
-  console.log(users);
-  
   while (i < users.length) {
     if (users[i]["email"] === email) {
       if (users[i]["pwd"] === password) {
@@ -54,15 +52,13 @@ function findByEmail(users, email) {
   return found;
 }
 
-function saveSession(newUser){
+function updateUser(newUser){
   let i = users.find((user,index)=>{
     if (user.email===newUser.email && user.pwd===newUser.pwd) {
       users[index] = {...user,sessionId:newUser.sessionId}
       return {...user,sessionId:newUser.sessionId}
     }
   })
-  console.log(i);
-  
   let jsonStr = JSON.stringify(users);
   fs.writeFile("../API-REST/src/database/db.json", jsonStr, (err) => {
     if (err) {
@@ -76,5 +72,5 @@ module.exports = {
   isUserAuthenticated,
   addUser,
   findByEmail,
-  saveSession
+  updateUser
 };

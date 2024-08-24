@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const loginController = require("../../controllers/loginController");
+const loginController = require("./controllers/loginController");
 const { bodyParserJson } = require("../../helpers/jsonBodyParser");
 bodyParserJson(router);
 const validationErrorHandler = require("../../middlewares/validationMiddleware");

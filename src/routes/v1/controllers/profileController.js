@@ -1,4 +1,4 @@
-const { findByUserId } = require("../models/UserModel");
+const { findByUserId } = require("../../../models/UserModel");
 function getProfile(req, res) {
   if (!req.session || !req.session.sessionId) return res.redirect("/v1/login");
   const sessionId = req.session.sessionId;
