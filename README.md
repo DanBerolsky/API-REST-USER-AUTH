@@ -1,32 +1,7 @@
-Verifico version de npm
 
-$> npm -v
-4.2.0
+## API Documentation
 
-Si npm no esta instalado, el siguiente comando lo instala de forma global
-$> npm install -g npm
-
-Si npm no esta actualizado, el siguiente comando lo actualiza de forma global
-$> npm update -g npm
-
-NPM utiliza el archivo package.json para almacenar todos los datos relevantes a nuestra aplicación.
-Nos realizara varias preguntas para configurar adecuadamente la app.
-Este archivo también se guardarán las dependencias de paquetes del proyecto junto con su configuración básica (nombre del proyecto, versión, etc).
-$> npm init
-
-
-Instala las libreria en el directorio del app, y guarda su referencia en "package.json"
-$> npm install express --save
-$> npm install nodemon --save
-
-Generador de aplicaciones express
-
-Instale el generador de aplicaciones como un paquete npm global y luego inícielo:
-
-$ npm install -g express-generator
-$ express
-
-
+The Postman collection for the API can be found [here](https://go.postman.co/workspace/1be40669-5ba9-48c1-8e0c-abf5ade91b8d/collection/37499724-93945552-e6ec-420e-891f-88304d1ec239).
 
 
 
