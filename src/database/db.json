@@ -1,1 +1,7 @@
-[{"email":"hello@hello.com","pwd":"Hello12345","sessionId":""},{"email":"hola@hola.com","pwd":"Hola12345","sessionId":"wCNXSzUOu6nnJsEOAIQ4k"}]
+[
+  {
+    "email": "hola@hola.com",
+    "pwd": "Hola12345",
+    "sessionId": "4zrgIqNnpfLbQ50mmaVJn"
+  }
+]

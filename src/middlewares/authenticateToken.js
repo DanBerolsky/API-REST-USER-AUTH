@@ -11,7 +11,7 @@ function authenticateToken(req, res, next) {
     if (err) return res.sendStatus(403); // Token inválido
     user = { ...user, token: token };
     req.user = user;
-    next(); // Token válido, continuar
+    return next(); // Token válido, continuar
   });
 }
 

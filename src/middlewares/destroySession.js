@@ -1,7 +1,7 @@
 let destroySession = (req, _, next) =>
 {
     req.session.sessionId = ""   
-    next()
+    return next()
 }
 
 module.exports=
