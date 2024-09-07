@@ -2,7 +2,6 @@ const { findBySessionId } = require("../models/UserModel");
 
 async function authSession(req, res, next) {
   const sessionId = req.session.sessionId;
-  //console.log(sessionId);
   if (sessionId) {
     try {
       const user = await findBySessionId(sessionId);

@@ -1,8 +1,12 @@
 const express = require("express");
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 3033;
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session); //modulo para guardar las session en sqlite3
+
+// Configura cookie-parser antes de express-session
+app.use(cookieParser());
 
 app.use(
   session({
@@ -22,6 +26,7 @@ app.use(
   })
 );
 
+
 const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
@@ -38,9 +43,11 @@ app.use("/v1/user", user);
 const loginV2 = require("./src/routes/v2/login");
 const signupV2 = require("./src/routes/v2/signup");
 const profileV2 = require("./src/routes/v2/profile");
+const userV2 = require("./src/routes/v2/user");
 app.use("/v2/login", loginV2);
 app.use("/v2/signup", signupV2);
 app.use("/v2/profile", profileV2);
+app.use("/v2/user", userV2);
 
 app.get("/", (_, res) => {
   res.redirect("/v1/login");

@@ -22,7 +22,7 @@ async function findBySessionId(ID) {
 
   return found;
 }
-async function isUserAuthenticated(user) {
+async function isUserAuthenticated(email, password) {
   /*  let i = 0; 
   while (i < users.length) {
     if (users[i]["email"] === email) {
@@ -33,8 +33,6 @@ async function isUserAuthenticated(user) {
     }
     i++;
   } */
-  const email = user.email;
-  const password = user.pwd;
   let authenticated = false;
   authenticated = await new Promise((resolve, reject) => {
     db.get(
@@ -63,7 +61,7 @@ async function addUser(newUser) {
   new Promise((resolve, reject) => {
     db.run(
       "INSERT INTO users (email,password,sessionId) VALUES (?,?,?)",
-      [newUser.email, newUser.pwd, newUser.sessionId],
+      [newUser.email, newUser.password, newUser.sessionId],
       function (err) {
         if (err) {
           console.error("Error inserting data:", err.message);
@@ -113,7 +111,7 @@ async function updateSessionId(newUser) {
   await new Promise((resolve, reject) => {
     db.run(
       "UPDATE users SET sessionId = ? WHERE users.email = ? AND users.password = ?",
-      [newUser.sessionId, newUser.email, newUser.pwd],
+      [newUser.sessionId, newUser.email, newUser.password],
       (err) => {
         if (err) {
           console.error(err);
@@ -143,6 +141,25 @@ async function updateUserBySessionId(newUser) {
     );
   });
 }
+
+async function changePwd(email,password) {
+  await new Promise((resolve, reject) => {
+    db.run(
+      "UPDATE users SET password = ? WHERE email = ?",
+      [password, email],
+      (err) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(`Row(s) update:`);
+          resolve();
+        }
+      }
+    );
+  });
+}
+
 async function deleteUser(user) {
   await new Promise((resolve, reject) => {
     db.run(
@@ -169,4 +186,5 @@ module.exports = {
   updateSessionId,
   deleteUser,
   updateUserBySessionId,
+  changePwd
 };

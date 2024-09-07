@@ -2,8 +2,15 @@ const { isUserAuthenticated } = require("../../../models/UserModel");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 
-function login(req, res) {
-  if (isUserAuthenticated(req.body)) {
+async function login(req, res) {
+  let user;
+  const { email, password } = req.body;
+  try {
+    user =  await isUserAuthenticated(email, password)
+  } catch (error) {
+    return res.sendStatus(401)
+  }
+  if (user) {
     // Datos que quieres incluir en el token
     const payload = { ...req.body };
 
@@ -11,7 +18,7 @@ function login(req, res) {
     const secretKey = "mi_clave_secreta";
 
     // Opciones adicionales para el token
-    const options = { expiresIn: "5s" };
+    const options = { expiresIn: "10m" };
 
     // Crear el token
     const token = jwt.sign(payload, secretKey, options);
@@ -25,7 +32,7 @@ function login(req, res) {
       maxAge: 24 * 60 * 60 * 1000, // Cookie expira en 24 horas
     };
 
-    return res.cookie('token', token, cookieOptions).redirect(303, "/v2/profile");;
+    return res.cookie('token', token, cookieOptions).redirect(303, "/v2/profile");
   }
   return res.sendStatus(401).end();
 }

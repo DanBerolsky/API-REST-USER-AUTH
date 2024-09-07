@@ -4,7 +4,7 @@ const loginController = require("./controllers/loginController");
 const { bodyParserJson } = require("../../helpers/jsonBodyParser");
 bodyParserJson(router);
 const validationErrorHandler = require("../../middlewares/validationMiddleware");
-const validations = require("../../validators/authValidator")
+const {validations} = require("../../validators/authValidator")
 
 router.post("/", validations, validationErrorHandler, loginController.login);
 
