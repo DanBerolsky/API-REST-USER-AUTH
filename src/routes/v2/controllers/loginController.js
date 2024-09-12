@@ -1,18 +1,9 @@
-const { isUserAuthenticated } = require("../../../models/UserModel");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 
 async function login(req, res) {
-  let user;
-  const { email, password } = req.body;
-  try {
-    user =  await isUserAuthenticated(email, password)
-  } catch (error) {
-    return res.sendStatus(401)
-  }
-  if (user) {
     // Datos que quieres incluir en el token
-    const payload = { ...req.body };
+    const payload = { ...req.user };
 
     // Clave secreta para firmar el token
     const secretKey = "mi_clave_secreta";
@@ -33,8 +24,11 @@ async function login(req, res) {
     };
 
     return res.cookie('token', token, cookieOptions).redirect(303, "/v2/profile");
-  }
-  return res.sendStatus(401).end();
+}
+
+function logOut(req, res) {
+  //jwt blacklist*
+  res.redirect('/v2/login'); // Redirige a la página de inicio de sesión
 }
 
 function getLogin(_, res) {
@@ -46,4 +40,5 @@ function getLogin(_, res) {
 module.exports = {
   login,
   getLogin,
+  logOut
 };

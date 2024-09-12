@@ -1,24 +1,23 @@
 const path = require("path");
 const { findByEmail, addUser } = require("../../../models/UserModel");
+const bcrypt = require('bcrypt');
 
 async function signupAction(req, res) {
-  const postUser = req.body;
-  const { email, password } = postUser;
+  
+  const { email, password } = req.body;
+
   if (!email || !password) return res.status(400).send({ error: 'Something failed!' });
   try {
-    const user = await findByEmail(email)
-    if (!user) {
-      try{
-        await addUser(postUser);
-        return res.redirect(303, "/v2/login");
-      }catch(err){
-        return res.sendStatus(500)
-      }
+    if (!(await findByEmail(email))) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = { email, password: hashedPassword };
+      await addUser(newUser);
+      return res.redirect(303, "/v1/login");
     } else {
       return res.sendStatus(401);
     }
   } catch (error) {
-    return res.sendStatus(400)
+    res.sendStatus(500)
   }
 }
 

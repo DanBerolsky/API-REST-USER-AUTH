@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { bodyParserJson } = require("../../helpers/jsonBodyParser.js");
-bodyParserJson(router);
  const {
   signupForm,
   signupAction,

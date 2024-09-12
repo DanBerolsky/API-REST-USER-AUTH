@@ -1,11 +1,16 @@
-const { deleteUser, changePwd } = require("../../../models/UserModel");
-const bcrypt = require("bcrypt");
+const {
+  deleteUser,
+  changePwd,
+} = require("../../../models/UserModel");
+const bcrypt = require('bcrypt')
+
 
 async function deleteUserAction(req, res) {
   const {email} = req.user;
   try {
     await deleteUser(email);
-    res.redirect("/v1/logout");
+    res.redirect("/v3/logout");
+    //res.send("borrado");
   } catch (error) {
     res.sendStatus(500);
   }
@@ -24,7 +29,8 @@ async function changePwdAction(req, res) {
   const hashedPassword = await bcrypt.hash(newpassword, 10);
   try {
     await changePwd(email, hashedPassword);
-    return res.send("ok");
+    res.redirect("/v3/logout");
+    //return res.send("ok");
   } catch (error) {
     return res.sendStatus(500);
   }

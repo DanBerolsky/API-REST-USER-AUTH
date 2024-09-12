@@ -1,15 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const { bodyParserJson } = require("../../helpers/jsonBodyParser");
-bodyParserJson(router);
+const { authSession } = require("../../middlewares/authenticateSession");
+const validationErrorHandler = require("../../middlewares/validationMiddleware.js");
+const { validationsPassword } = require("../../validators/authValidator.js");
 const {
   changePwdAction,
   deleteUserAction,
 } = require("./controllers/userController");
-const { authSession } = require("../../middlewares/authenticateSession");
 
 router.delete("/", authSession, deleteUserAction);
 
-router.patch("/", authSession, changePwdAction);
+router.patch(
+  "/",
+  authSession,
+  validationsPassword,
+  validationErrorHandler,
+  changePwdAction
+);
 
 module.exports = router;

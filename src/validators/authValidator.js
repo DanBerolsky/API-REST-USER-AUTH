@@ -1,31 +1,7 @@
 const { body } = require("express-validator");
 
 // Definir las validaciones
-const validations = [
-  body("email")
-    .trim()
-    .notEmpty()
-    .withMessage("Email can't be empty")
-    .escape() // Cross-Site Scripting vulnerability (XSS).
-    .isEmail()
-    .withMessage("Invalid email format"),
-  body("password")
-    .trim()
-    .notEmpty()
-    .withMessage("Password can't be empty")
-    .escape() // Cross-Site Scripting vulnerability (XSS).
-    .isLength({ min: 8 })
-    .withMessage("Password must be at least 8 characters long") // Longitud mínima
-    .matches(/\d/)
-    .withMessage("Password must contain at least one number") // Debe contener al menos un número
-    .matches(/[a-z]/)
-    .withMessage("Password must contain at least one lowercase letter") // Debe contener al menos una letra minúscula
-    .matches(/[A-Z]/)
-    .withMessage("Password must contain at least one uppercase letter") // Debe contener al menos una letra mayúscula
-];
-
-const validationsPassword = [
-  body("password")
+const validationsPassword = body("password")
   .trim()
   .notEmpty()
   .withMessage("Password can't be empty")
@@ -37,7 +13,17 @@ const validationsPassword = [
   .matches(/[a-z]/)
   .withMessage("Password must contain at least one lowercase letter") // Debe contener al menos una letra minúscula
   .matches(/[A-Z]/)
-  .withMessage("Password must contain at least one uppercase letter") // Debe contener al menos una letra mayúscula
-]
+  .withMessage("Password must contain at least one uppercase letter"); // Debe contener al menos una letra mayúscula
 
-module.exports = { validations, validationsPassword};
+const validations = [
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email can't be empty")
+    .escape() // Cross-Site Scripting vulnerability (XSS).
+    .isEmail()
+    .withMessage("Invalid email format"),
+  validationsPassword,
+];
+
+module.exports = { validations, validationsPassword };

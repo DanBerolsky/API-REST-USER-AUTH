@@ -1,33 +1,33 @@
-const {
-  isUserAuthenticated,
-  updateSessionId,
-} = require("../../../models/UserModel");
+const { updateSessionId } = require("../../../models/UserModel");
 const path = require("path");
 var { nanoid } = require("nanoid");
 
 async function login(req, res) {
-  let isAuthenticated = false;
-  const { email, password } = req.body;
-  
+  const newSessionId = nanoid();
+  req.session.sessionId = newSessionId;
+  const {email} = req.user
+  // Guarda la nueva sesión en la base de datos
+  let newUser = { email, sessionId: newSessionId };
   try {
-    isAuthenticated = await isUserAuthenticated(email, password);
+    await updateSessionId(newUser);
   } catch (error) {
-    return res.sendStatus(500);
+    return res.status(500).send({message:"Error interno del servidor"});
   }
+  return res.redirect(303, "/v1/profile");
+}
 
-  if (isAuthenticated) {
-    const newSessionId = nanoid();
-    req.session.sessionId = newSessionId;
-    // Guarda la nueva sesión en la base de datos
-    let newUser = { ...req.body, sessionId: newSessionId };
-    try {
-      await updateSessionId(newUser);
-    } catch (error) {
-      return res.sendStatus(500);
+function logOut(req, res) {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).send('Error logging out');
     }
-    return res.redirect(303, "/v1/profile");
-  }
-  return res.sendStatus(401).end();
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Error destroying session');
+      }
+      res.redirect('/v1/login'); // Redirige a la página de inicio de sesión
+    });
+  });
 }
 
 function getLogin(_, res) {
@@ -39,4 +39,5 @@ function getLogin(_, res) {
 module.exports = {
   login,
   getLogin,
+  logOut
 };

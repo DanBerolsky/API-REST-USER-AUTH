@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const loginController = require("./controllers/loginController");
-const { bodyParserJson } = require("../../helpers/jsonBodyParser");
 const validationErrorHandler = require("../../middlewares/validationMiddleware");
 const {validations} = require("../../validators/authValidator")
-bodyParserJson(router);
+const authenticateUser = require("../../middlewares/authenticateUser");
 
-router.post("/", validations, validationErrorHandler, loginController.login);
+router.post("/login", validations, validationErrorHandler, authenticateUser, loginController.login);
 
-router.get("/", loginController.getLogin);
+router.get("/logout", loginController.logOut)
+
+router.get("/login", loginController.getLogin);
 
 module.exports = router;

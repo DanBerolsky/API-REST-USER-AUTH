@@ -4,9 +4,14 @@ const app = express();
 const PORT = process.env.PORT || 3033;
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session); //modulo para guardar las session en sqlite3
+const {passport} = require('./src/passport/passportConfig')
 
 // Configura cookie-parser antes de express-session
 app.use(cookieParser());
+
+// Middleware para analizar cuerpos de solicitud JSON y URL-encoded
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
@@ -26,6 +31,10 @@ app.use(
   })
 );
 
+// Inicializar Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
@@ -35,7 +44,7 @@ const login = require("./src/routes/v1/login");
 const signup = require("./src/routes/v1/signup");
 const profile = require("./src/routes/v1/profile");
 const user = require("./src/routes/v1/user");
-app.use("/v1/login", login);
+app.use("/v1/", login);
 app.use("/v1/signup", signup);
 app.use("/v1/profile", profile);
 app.use("/v1/user", user);
@@ -44,14 +53,19 @@ const loginV2 = require("./src/routes/v2/login");
 const signupV2 = require("./src/routes/v2/signup");
 const profileV2 = require("./src/routes/v2/profile");
 const userV2 = require("./src/routes/v2/user");
-app.use("/v2/login", loginV2);
+app.use("/v2/", loginV2);
 app.use("/v2/signup", signupV2);
 app.use("/v2/profile", profileV2);
 app.use("/v2/user", userV2);
 
-app.get("/", (_, res) => {
-  res.redirect("/v1/login");
-});
+const loginV3 = require("./src/routes/v3/login");
+const signupV3 = require("./src/routes/v3/signup");
+const profileV3 = require("./src/routes/v3/profile");
+const userV3 = require("./src/routes/v3/user");
+app.use("/v3/", loginV3);
+app.use("/v3/signup", signupV3);
+app.use("/v3/profile", profileV3);
+app.use("/v3/user", userV3);
 
 // Cerrar la base de datos cuando se apaga la aplicación
 process.on("SIGINT", () => {

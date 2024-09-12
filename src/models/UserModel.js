@@ -1,54 +1,51 @@
 const db = require("../database/dataBase.js");
 
-async function findBySessionId(ID) {
+async function findBySessionId(id) {
+  /*
   let found = null;
-  /* let i = 0;
+  let i = 0;
   while (i < users.length && !found) {
     if (users[i]["sessionId"] === userId) {
       found = users[i];
-    }
-    i++;
-  } */
-  found = await new Promise((resolve, reject) => {
-    db.get("SELECT * FROM users WHERE sessionId = ?", [ID], (err, row) => {
-      if (err) {
-        console.error(err);
-        reject(err);
-      } else {
-        resolve(row);
       }
-    });
-  });
-
-  return found;
-}
-async function isUserAuthenticated(email, password) {
-  /*  let i = 0; 
-  while (i < users.length) {
-    if (users[i]["email"] === email) {
-      if (users[i]["pwd"] === password) {
-        authenticated  = true;
-      }
-      i = users.length;
-    }
-    i++;
-  } */
-  let authenticated = false;
-  authenticated = await new Promise((resolve, reject) => {
-    db.get(
-      "SELECT * FROM users WHERE users.email = ? AND users.password = ?",
-      [email, password],
-      (err, row) => {
+      i++;
+      } 
+      return found
+      */
+  try {
+    const result = await new Promise((resolve, reject) => {
+      db.get("SELECT * FROM users WHERE sessionId = ?", [id], (err, row) => {
         if (err) {
-          console.log(err);
+          console.error(err);
           reject(err);
+        } else {
+          resolve(row);
         }
-        resolve(row);
-      }
-    );
-  });
-
-  return authenticated;
+      });
+    });
+    return result;
+  } catch (err) {
+    console.error("Error in findBySessionId:", error);
+    throw error;
+  }
+}
+async function findById(id) {
+  try {
+    const result = await new Promise((resolve, reject) => {
+      db.get("SELECT * FROM users WHERE id = ?", [id], (err, row) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve(row);
+        }
+      });
+    });
+    return result;
+  } catch (err) {
+    console.error("Error in findById:", error);
+    throw error;
+  }
 }
 async function addUser(newUser) {
   /* users.push({ ...newUser, sessionId: "" });
@@ -110,8 +107,8 @@ async function updateSessionId(newUser) {
   }); */
   await new Promise((resolve, reject) => {
     db.run(
-      "UPDATE users SET sessionId = ? WHERE users.email = ? AND users.password = ?",
-      [newUser.sessionId, newUser.email, newUser.password],
+      "UPDATE users SET sessionId = ? WHERE users.email = ?",
+      [newUser.sessionId, newUser.email],
       (err) => {
         if (err) {
           console.error(err);
@@ -141,8 +138,7 @@ async function updateUserBySessionId(newUser) {
     );
   });
 }
-
-async function changePwd(email,password) {
+async function changePwd(email, password) {
   await new Promise((resolve, reject) => {
     db.run(
       "UPDATE users SET password = ? WHERE email = ?",
@@ -159,12 +155,11 @@ async function changePwd(email,password) {
     );
   });
 }
-
-async function deleteUser(user) {
+async function deleteUser(email) {
   await new Promise((resolve, reject) => {
     db.run(
-      "DELETE FROM users WHERE email = ? AND password = ?",
-      [user.email, user.password],
+      "DELETE FROM users WHERE email = ?",
+      [email],
       (err) => {
         if (err) {
           console.error(err);
@@ -180,11 +175,11 @@ async function deleteUser(user) {
 
 module.exports = {
   findBySessionId,
-  isUserAuthenticated,
   addUser,
   findByEmail,
   updateSessionId,
   deleteUser,
   updateUserBySessionId,
-  changePwd
+  changePwd,
+  findById
 };
