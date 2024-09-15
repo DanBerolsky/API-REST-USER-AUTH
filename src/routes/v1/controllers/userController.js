@@ -24,7 +24,7 @@ async function changePwdAction(req, res) {
   const hashedPassword = await bcrypt.hash(newpassword, 10);
   try {
     await changePwd(email, hashedPassword);
-    return res.send("ok");
+    return res.redirect('/v1/logout')
   } catch (error) {
     return res.sendStatus(500);
   }
