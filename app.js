@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3033;
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session); //modulo para guardar las session en sqlite3
 const {passport} = require('./src/passport/passportConfig')
+const rateLimit = require('express-rate-limit');
 
 // Configura cookie-parser antes de express-session
 app.use(cookieParser());
@@ -39,6 +40,16 @@ app.use(passport.session());
 const path = require("path");
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
+
+// Configura el rate limiter
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 20, // Limita cada IP a 100 solicitudes por ventana
+  message: 'Demasiadas solicitudes desde esta IP, por favor intente más tarde.'
+});
+
+// Aplica el rate limiter a todas las solicitudes
+app.use('/', apiLimiter);
 
 const login = require("./src/routes/v1/login");
 const signup = require("./src/routes/v1/signup");
