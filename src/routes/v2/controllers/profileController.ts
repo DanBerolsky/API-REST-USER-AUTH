@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import jwtRequest from "../../../types/jwtRequest";
+import { UserJWTRequest } from "../../../types/user";
 
 export default function getProfile(req: Request, res: Response) {
-  let user: jwtRequest = req.user as jwtRequest;
+  let user: UserJWTRequest = req.user as UserJWTRequest;
   if (!user || !user.token) {
     res.status(400).send("session errors")
   }

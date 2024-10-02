@@ -1,5 +1,5 @@
 import express from "express";
-import { changePwdAction, deleteUserAction } from "./controllers/userController";
+import { changePwdAction, deleteUserAction } from "../global/userController";
 import ensureAuthenticated from "../../middlewares/authMiddlewere";
 
 const router = express.Router();

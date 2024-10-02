@@ -4,20 +4,21 @@ import { nanoid } from "nanoid";
 import { Request, Response } from "express";
 import "express-session";
 import { Session } from "express-session";
+import { UserEmail, UserSession } from "../../../types/user";
 
 async function login(req: Request, res: Response) {
   const newSessionId: string = nanoid();
-  const sessionw: Session = req.session as Session;
-  sessionw.sessionId = newSessionId;
+  const session: Session = req.session as Session;
+  session.sessionId = newSessionId;
 
-  const { email } = req.user as any;
+  const { email } = req.user as UserEmail;
 
   if (typeof email !== "string") {
     return res.status(403).send({ message: "error session" });
   }
 
   // Guarda la nueva sesión en la base de datos
-  let newUser = { email, sessionId: newSessionId };
+  let newUser: UserSession = { email, sessionId: newSessionId };
   try {
     await updateSessionId(newUser);
   } catch (error) {
@@ -40,7 +41,7 @@ function logOut(req: Request, res: Response) {
   });
 }
 
-function getLogin(_: any, res: Response) {
+function getLogin(_: Request, res: Response) {
   res.render("index", () => {
     res.sendFile(path.resolve(__dirname, "../../../public/login.html"));
   });

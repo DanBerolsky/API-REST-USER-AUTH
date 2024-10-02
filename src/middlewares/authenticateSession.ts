@@ -1,5 +1,6 @@
 import { findBySessionId } from "../models/UserModel";
 import { Request, Response, NextFunction } from "express";
+import User from "../types/user";
 
 async function authSession(req: Request, res: Response, next: NextFunction) {
   const sessionId: string | undefined = req.session.sessionId;
@@ -8,9 +9,9 @@ async function authSession(req: Request, res: Response, next: NextFunction) {
     return res.status(401).send({ message: "Error session" });
   }
   try {
-    const user = await findBySessionId(sessionId);
-    if (!user) return res.status(401).send({ message: "Error session" });
-    req.user = user;
+    const found : User | null = await findBySessionId(sessionId);
+    if (!found) return res.status(401).send({ message: "Error session" });
+    req.user = found;
     return next();
   } catch (err) {
     // Manejar errores en la consulta

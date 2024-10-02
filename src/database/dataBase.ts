@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 sqlite3.verbose();
-const db : sqlite3.Database = new sqlite3.Database("./src/database/database.db");
+const db: sqlite3.Database = new sqlite3.Database("./src/database/database.db");
 
 // Crear tablas iniciales o hacer otras configuraciones si es necesario
 db.serialize(() => {

@@ -6,7 +6,7 @@ import { validationsPassword } from "../../validators/authValidator";
 import {
   changePwdAction,
   deleteUserAction,
-} from "./controllers/userController";
+} from "../global/userController";
 
 
 router.delete("/", authSession, deleteUserAction);

@@ -16,7 +16,7 @@ const sessionMiddleware = session({
   cookie: {
     secure: false, // Cambia a true si usas HTTPS
     sameSite: "lax",
-    maxAge: 5 * 60 * 1000, // Tiempo de vida de la cookie (5 minutos)
+    maxAge: 10000, // Tiempo de vida de la cookie (1 minuto)
   },
 });
 

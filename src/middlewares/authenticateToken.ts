@@ -1,9 +1,8 @@
 import { findByEmail } from "../models/UserModel";
 import JWTHelper from "../helpers/JWTHelper";
-import User from "../types/user";
-import DecodedPayload from "../types/decodedPayload";
+import User, { UserJWTRequest } from "../types/user";
+import {UserPayload} from "../types/user";
 import { Request, Response, NextFunction } from "express";
-import jwtRequest from '../types/jwtRequest'
 
 // Middleware para verificar el token
 export default async function authenticateToken(
@@ -24,7 +23,7 @@ export default async function authenticateToken(
       return res.status(403).send({ message: "token inválido" }); // Token inválido
     }
 
-    const { email, last_password_update} = decoded as DecodedPayload;
+    const { email, last_password_update} = decoded as UserPayload;
     const found: null | User = await findByEmail(email);
 
     if (!found) {
@@ -34,7 +33,7 @@ export default async function authenticateToken(
     if (!newPassword) {
       return res.status(401).send({ message: "token inválido" }); //cambio la pwd
     }
-    const user: jwtRequest = { email, token: token };
+    const user: UserJWTRequest = { ...found, token: token };
     req.user = user;
     return next(); // Token válido, continuar
   });

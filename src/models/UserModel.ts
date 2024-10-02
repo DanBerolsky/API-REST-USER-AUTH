@@ -1,8 +1,7 @@
 import db from "../database/dataBase";
-import User from "../types/user"
+import User, { UserSession, UserSignup } from "../types/user";
 
-
-export async function findBySessionId(id: string) {
+export async function findBySessionId(id: string): Promise<User | null> {
   /*
   let found = null;
   let i = 0;
@@ -15,14 +14,18 @@ export async function findBySessionId(id: string) {
       return found
       */
   try {
-    const result = await new Promise((resolve, reject) => {
+    const result : User | null = await new Promise((resolve, reject) => {
       db.get("SELECT * FROM users WHERE sessionId = ?", [id], (err, row) => {
         if (err) {
           console.error(err);
-          reject(err);
-        } else {
-          resolve(row);
+          return reject(err);
         }
+        if (!row) {
+          return resolve(null);
+        }
+        // Crea el objeto User a partir de row
+        const user: User = { ...(row as User) };
+        return resolve(user); // Resuelve con el objeto User
       });
     });
     return result;
@@ -54,7 +57,7 @@ export async function findById(id: number): Promise<User | null> {
     throw err;
   }
 }
-export async function addUser(newUser: User) {
+export async function addUser(newUser: UserSignup) {
   /* users.push({ ...newUser, sessionId: "" });
   let jsonStr = JSON.stringify(users);
   fs.writeFile("../API-REST/src/database/db.json", jsonStr, (err) => {
@@ -64,8 +67,8 @@ export async function addUser(newUser: User) {
   }); */
   new Promise<void>((resolve, reject) => {
     db.run(
-      "INSERT INTO users (email,password,sessionId) VALUES (?,?,?)",
-      [newUser.email, newUser.password, newUser.sessionId],
+      "INSERT INTO users (email,password) VALUES (?,?)",
+      [newUser.email, newUser.password],
       function (err) {
         if (err) {
           console.error("Error inserting data:", err.message);
@@ -106,7 +109,7 @@ export async function findByEmail(email: string): Promise<null | User> {
 
   return found;
 }
-export async function updateSessionId(newUser: User): Promise<void> {
+export async function updateSessionId(newUser: UserSession): Promise<void> {
   /* let i = users.find((user,index)=>{
     if (user.email===newUser.email && user.pwd===newUser.pwd) {
       users[index] = {...user,sessionId:newUser.sessionId}

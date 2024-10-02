@@ -1,7 +1,11 @@
 # Ignorar la carpeta node_modules
 node_modules/
+dist/
 
 # Ignorar archivos temporales del sistema
 .DS_Store
 Thumbs.db
 src/database/database.db
+
+# variables de entorno
+.env.local
