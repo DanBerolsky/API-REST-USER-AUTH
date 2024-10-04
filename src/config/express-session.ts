@@ -1,11 +1,10 @@
-// middlewares/global/sqliteStore.ts
 import session from "express-session";
 import SQLiteStore from "connect-sqlite3";
 
 const SQLiteStoreConstructor = SQLiteStore(session);
 
 // Configuración del middleware de sesión
-const sessionMiddleware = session({
+const sessionConfig = {
   store: new SQLiteStoreConstructor({
     db: "database.db", // Nombre del archivo de base de datos
     dir: "./src/database/", // Directorio donde se almacenará la base de datos
@@ -18,6 +17,6 @@ const sessionMiddleware = session({
     sameSite: "lax",
     maxAge: 10000, // Tiempo de vida de la cookie (1 minuto)
   },
-});
+};
 
-export default sessionMiddleware;
+export default sessionConfig;

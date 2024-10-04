@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import "express-session";
 import { Session } from "express-session";
 import { UserEmail, UserSession } from "../../../types/user";
+import { MESSAGES } from '../../../utils/messages';
 
 async function login(req: Request, res: Response) {
   const newSessionId: string = nanoid();
@@ -13,16 +14,12 @@ async function login(req: Request, res: Response) {
 
   const { email } = req.user as UserEmail;
 
-  if (typeof email !== "string") {
-    return res.status(403).send({ message: "error session" });
-  }
-
   // Guarda la nueva sesión en la base de datos
   let newUser: UserSession = { email, sessionId: newSessionId };
   try {
     await updateSessionId(newUser);
   } catch (error) {
-    return res.status(500).send({ message: "Error interno del servidor" });
+    return res.status(500).json({message: MESSAGES.GENERAL.ERROR.INTERNAL_SERVER_ERROR});
   }
   return res.redirect(303, "/v1/profile");
 }
@@ -30,11 +27,11 @@ async function login(req: Request, res: Response) {
 function logOut(req: Request, res: Response) {
   req.logout((err: any) => {
     if (err) {
-      return res.status(500).send("Error logging out");
+      return res.status(500).json({message: MESSAGES.AUTH.ERROR.LOGOUT_ERROR});
     }
     req.session.destroy((err: any) => {
       if (err) {
-        return res.status(500).send("Error destroying session");
+        return res.status(500).json({message: MESSAGES.AUTH.ERROR.SESSION_DESTROY_ERROR});
       }
       res.redirect("/v1/login"); // Redirige a la página de inicio de sesión
     });

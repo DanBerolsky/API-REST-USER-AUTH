@@ -1,38 +1,28 @@
 import path from "path";
 import JWTHelper from "../../../helpers/JWTHelper";
 import { UserPayload } from "../../../types/user";
-import { Request, Response, CookieOptions } from "express";
+import { CookieOptions, Request, Response} from "express";
+import { options, cookieOptions } from "../../../config/JWT";
+import { SignOptions } from "jsonwebtoken";
+import { MESSAGES } from '../../../utils/messages';
 
 async function login(req: Request, res: Response) {
   const { email, last_password_update } = req.user as UserPayload;
 
-  if (!last_password_update || !email)
-    return res.status(500).send("Internal error");
-
   // Datos que quieres incluir en el token
   const payload: UserPayload = { email, last_password_update };
 
-  // Opciones adicionales para el token
-  const options = { expiresIn: "1m" };
-
   try {
     // Crear el token
-    const token = new JWTHelper().sign(payload, options);
-
-    // Opciones básicas para la cookie
-    const cookieOptions : CookieOptions  = {
-      httpOnly: true, // Cambiar a true en producción
-      secure: false, // Cambiar a true en producción si usas HTTPS
-      sameSite: "lax", 
-      maxAge: 24 * 60 * 60 * 1000, // Cookie expira en 24 horas
-    };
+    const token = new JWTHelper().sign(payload, options as SignOptions);
 
     // Establecer la cookie y redirigir
-    res.cookie("token", token, cookieOptions);
+    res.cookie("token", token, cookieOptions as CookieOptions);
+
     return res.redirect(303, "/v2/profile");
   } catch (error) {
     console.error("Error during login:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({message: MESSAGES.GENERAL.ERROR.INTERNAL_SERVER_ERROR});
   }
 }
 

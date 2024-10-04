@@ -1,14 +1,10 @@
 import { Strategy as LocalStrategy } from "passport-local";
 import { findById, findByEmail } from "../../models/UserModel";
 import bcrypt from "bcrypt";
+import { MESSAGES } from '../../utils/messages'; // Asegúrate de la ruta correcta
+import User from "../../types/user";
+import { DoneCallback } from "passport";
 
-interface User {
-  id?: number;
-  email?: string;
-  password?: string;
-  token?: string;
-  sessionId?: string;
-}
 
 // Configuración de la estrategia local
 export const localStrategy = new LocalStrategy(
@@ -17,18 +13,17 @@ export const localStrategy = new LocalStrategy(
     try {
       const user: User | null = await findByEmail(username);
       if (!user) {
-        return done(null, false, { message: "No user found." });
+        return done(null, false, { message: MESSAGES.AUTH.ERROR.USER_NOT_FOUND }); // Mensaje de usuario no encontrado
       }
       if (!user.password) {
-        return done(null, false, { message: "User does not have a password" });
+        return done(null, false, { message: MESSAGES.AUTH.ERROR.NO_PASSWORD }); // Mensaje de que el usuario no tiene contraseña
       }
       try {
         const isMatch = await bcrypt.compare(password, user.password);
-        //const isMatch = password === user.password
         if (isMatch) {
           return done(null, user);
         } else {
-          return done(null, false, { message: "Incorrect password." });
+          return done(null, false, { message: MESSAGES.AUTH.ERROR.INCORRECT_PASSWORD }); // Mensaje de contraseña incorrecta
         }
       } catch (error) {
         console.error("bcrypt error");
@@ -44,15 +39,14 @@ export const localStrategy = new LocalStrategy(
 // Función de serialización del usuario
 export function serializeUser(
   user: { id?: any },
-  done: (arg0: any, arg1: any) => void
-) {
+  done: DoneCallback){
   return done(null, user.id);
 }
 
 // Función de deserialización del usuario
 export async function deserializeUser(
   id: any,
-  done: (arg0: unknown, arg1: boolean | User) => any
+  done: DoneCallback
 ) {
   if (!id) return done(null, false);
   try {

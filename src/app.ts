@@ -2,7 +2,7 @@ import express from "express";
 import passport from "./passport/passportConfig";
 import routes from "./routes";
 import apiLimiter from "./middlewares/global/expressRateLimit";
-import sessionMiddleware from "./middlewares/global/sqliteStore";
+import sessionMiddleware from "./middlewares/global/expressSession";
 import setupDatabaseShutdown from "./database/databaseShutdown";
 import setupMiddlewares from "./middlewares/global/setupMiddleweres";
 import dotenv from "dotenv";
@@ -30,10 +30,10 @@ app.set("view engine", "pug");
 
 // Aplica el rate limiter a todas las solicitudes
 
-app.use("/", apiLimiter(30));
+/* app.use("/", apiLimiter(30));
 app.use("/v1/signup", apiLimiter(2));
 app.use("/v2/signup", apiLimiter(2));
-app.use("/v3/signup", apiLimiter(2));
+app.use("/v3/signup", apiLimiter(2)); */
 
 //---rutas---
 app.use(routes);
