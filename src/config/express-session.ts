@@ -11,11 +11,11 @@ const sessionConfig = {
   }) as any,
   secret: "keyboard cat", // Cambia esto a un valor más seguro en producción
   resave: false, // No volver a guardar la sesión si no ha cambiado
-  saveUninitialized: false, // No guarda sesiones no inicializadas
+  saveUninitialized: true, // guarda sesiones no inicializadas
   cookie: {
     secure: false, // Cambia a true si usas HTTPS
     sameSite: "lax",
-    maxAge: 10000, // Tiempo de vida de la cookie (1 minuto)
+    maxAge: 20000, // Tiempo de vida de la cookie (1 minuto)
   },
 };
 

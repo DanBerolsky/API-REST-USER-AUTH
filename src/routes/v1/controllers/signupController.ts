@@ -1,9 +1,9 @@
-import path from "path";
 import { findByEmail, addUser } from "../../../models/UserModel";
 import bcrypt from 'bcrypt';
 import { UserSignup } from "../../../types/user";
 import { Request, Response } from "express";
 import { MESSAGES } from '../../../utils/messages'; // Asegúrate de que la ruta sea correcta
+import signupVx from "../../../public/signupVx";
 
 async function signupAction(req: Request, res: Response) {
   const { email, password } = req.body as UserSignup;
@@ -24,9 +24,7 @@ async function signupAction(req: Request, res: Response) {
 }
 
 function signupForm(_: Request, res: Response) {
-  res.render("index", () => {
-    res.sendFile(path.resolve(__dirname, "../../../public/signup.html"));
-  });
+  res.send(signupVx("/v1/signup"));
 }
 
 export { signupForm, signupAction };

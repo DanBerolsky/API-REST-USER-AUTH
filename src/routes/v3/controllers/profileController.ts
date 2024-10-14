@@ -6,8 +6,9 @@ async function getProfile(req:Request, res:Response) {
   if (!user) {
     return res.send(500)
   }
+  const cadena = JSON.stringify(user);
   return res.send(
-    `<span>Email: ${user.email}</span><a href='/v1/login'>Logout</a>`
+    `<span>profile</span><br><span>${cadena}</span><br><a href='/v3/login'>Logout</a>`
   );
 }
 

@@ -1,11 +1,11 @@
 import { updateSessionId } from "../../../models/UserModel";
-import path from "path";
 import { nanoid } from "nanoid";
 import { Request, Response } from "express";
 import "express-session";
 import { Session } from "express-session";
 import { UserEmail, UserSession } from "../../../types/user";
 import { MESSAGES } from '../../../utils/messages';
+import loginVx from "../../../public/loginVx";
 
 async function login(req: Request, res: Response) {
   const newSessionId: string = nanoid();
@@ -39,9 +39,7 @@ function logOut(req: Request, res: Response) {
 }
 
 function getLogin(_: Request, res: Response) {
-  res.render("index", () => {
-    res.sendFile(path.resolve(__dirname, "../../../public/login.html"));
-  });
+  res.send(loginVx("/v1/login"));
 }
 
 export { login, getLogin, logOut };

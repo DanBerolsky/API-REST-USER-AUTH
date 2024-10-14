@@ -1,8 +1,8 @@
-import path from "path";
-import passport from "../../../passport/passportConfig";
+import passport from "../../../passport/passport";
 import { NextFunction, Request, Response } from "express";
 import { UserAuthenticate } from "../../../types/user";
 import { MESSAGES } from '../../../utils/messages';
+import loginVx from "../../../public/loginVx";
 
 function login(req: Request, res: Response, next: NextFunction) {
   passport.authenticate("local", (err: any, user: UserAuthenticate, info: { message: any; }) => {
@@ -23,9 +23,7 @@ function logOut(req: Request, res: Response) {
 }
 
 function getLogin(_req: Request, res: Response) {
-  res.render("index", () => {
-    res.sendFile(path.resolve(__dirname, "../../../public/login.html"));
-  });
+  res.send(loginVx("/v3/login"));
 }
 
 export {

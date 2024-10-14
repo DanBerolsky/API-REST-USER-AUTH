@@ -9,3 +9,4 @@ src/database/database.db
 
 # variables de entorno
 .env.local
+.env.production

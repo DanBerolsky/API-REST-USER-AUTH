@@ -1,14 +1,13 @@
-import express from "express";
-import passport from "./passport/passportConfig";
+import "./config/dotenv";
+import express, { Errback, NextFunction, Request, Response } from "express";
+import passport from "./passport/passport";
 import routes from "./routes";
 import apiLimiter from "./middlewares/global/expressRateLimit";
 import sessionMiddleware from "./middlewares/global/expressSession";
 import setupDatabaseShutdown from "./database/databaseShutdown";
 import setupMiddlewares from "./middlewares/global/setupMiddleweres";
-import dotenv from "dotenv";
 import deleteExpiredSessions from "./database/deleteExpiredSessions";
-
-dotenv.config();
+import path from "path";
 
 const app = express();
 const PORT = process.env.PORT || 3033;
@@ -24,22 +23,27 @@ deleteExpiredSessions();
 app.use(passport.initialize());
 app.use(passport.session());
 
-const path = require("path");
+
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 
 // Aplica el rate limiter a todas las solicitudes
-
-/* app.use("/", apiLimiter(30));
+app.use("/", apiLimiter(30));
 app.use("/v1/signup", apiLimiter(2));
 app.use("/v2/signup", apiLimiter(2));
-app.use("/v3/signup", apiLimiter(2)); */
+app.use("/v3/signup", apiLimiter(2));
+app.use("/v4/signup", apiLimiter(2));
 
 //---rutas---
 app.use(routes);
 
 // Cerrar la base de datos cuando se apaga la aplicación
 setupDatabaseShutdown();
+
+app.use((err: Errback, req: Request, res: Response, next: NextFunction) => {
+  console.error("Error en el flujo de autenticación:", err);
+  res.status(500).send("Algo salió mal."); // Mensaje de error genérico
+});
 
 app.listen(PORT, () => {
   console.log("http://localhost:" + PORT);

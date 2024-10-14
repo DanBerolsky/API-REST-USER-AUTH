@@ -1,10 +1,8 @@
 import { Strategy as LocalStrategy } from "passport-local";
-import { findById, findByEmail } from "../../models/UserModel";
+import { findByEmail } from "../../models/UserModel";
 import bcrypt from "bcrypt";
-import { MESSAGES } from '../../utils/messages'; // Asegúrate de la ruta correcta
+import { MESSAGES } from "../../utils/messages"; // Asegúrate de la ruta correcta
 import User from "../../types/user";
-import { DoneCallback } from "passport";
-
 
 // Configuración de la estrategia local
 export const localStrategy = new LocalStrategy(
@@ -13,7 +11,9 @@ export const localStrategy = new LocalStrategy(
     try {
       const user: User | null = await findByEmail(username);
       if (!user) {
-        return done(null, false, { message: MESSAGES.AUTH.ERROR.USER_NOT_FOUND }); // Mensaje de usuario no encontrado
+        return done(null, false, {
+          message: MESSAGES.AUTH.ERROR.USER_NOT_FOUND,
+        }); // Mensaje de usuario no encontrado
       }
       if (!user.password) {
         return done(null, false, { message: MESSAGES.AUTH.ERROR.NO_PASSWORD }); // Mensaje de que el usuario no tiene contraseña
@@ -23,7 +23,9 @@ export const localStrategy = new LocalStrategy(
         if (isMatch) {
           return done(null, user);
         } else {
-          return done(null, false, { message: MESSAGES.AUTH.ERROR.INCORRECT_PASSWORD }); // Mensaje de contraseña incorrecta
+          return done(null, false, {
+            message: MESSAGES.AUTH.ERROR.INCORRECT_PASSWORD,
+          }); // Mensaje de contraseña incorrecta
         }
       } catch (error) {
         console.error("bcrypt error");
@@ -35,28 +37,3 @@ export const localStrategy = new LocalStrategy(
     }
   }
 );
-
-// Función de serialización del usuario
-export function serializeUser(
-  user: { id?: any },
-  done: DoneCallback){
-  return done(null, user.id);
-}
-
-// Función de deserialización del usuario
-export async function deserializeUser(
-  id: any,
-  done: DoneCallback
-) {
-  if (!id) return done(null, false);
-  try {
-    const user: User | null = await findById(id);
-    if (!user) {
-      return done(null, false);
-    }
-    return done(null, user);
-  } catch (error) {
-    console.error("Error during deserialization:", error);
-    return done(error, false);
-  }
-}

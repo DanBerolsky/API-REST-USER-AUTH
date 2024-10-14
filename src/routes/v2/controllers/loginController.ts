@@ -1,10 +1,10 @@
-import path from "path";
 import JWTHelper from "../../../helpers/JWTHelper";
 import { UserPayload } from "../../../types/user";
 import { CookieOptions, Request, Response} from "express";
 import { options, cookieOptions } from "../../../config/JWT";
 import { SignOptions } from "jsonwebtoken";
 import { MESSAGES } from '../../../utils/messages';
+import loginVx from "../../../public/loginVx";
 
 async function login(req: Request, res: Response) {
   const { email, last_password_update } = req.user as UserPayload;
@@ -32,9 +32,7 @@ function logOut(req: Request, res: Response) {
 }
 
 function getLogin(_req: Request, res: Response) {
-  res.render("index", () => {
-    res.sendFile(path.resolve(__dirname, "../../../public/loginV2.html"));
-  });
+  res.send(loginVx("/v2/login"));
 }
 
 export { login, getLogin, logOut };
