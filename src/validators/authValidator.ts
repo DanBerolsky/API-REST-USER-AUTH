@@ -15,15 +15,14 @@ const validationsPassword = body("password")
   .matches(/[A-Z]/)
   .withMessage("Password must contain at least one uppercase letter"); // Debe contener al menos una letra mayúscula
 
-const validations = [
-  body("email")
-    .trim()
-    .notEmpty()
-    .withMessage("Email can't be empty")
-    .escape() // Cross-Site Scripting vulnerability (XSS).
-    .isEmail()
-    .withMessage("Invalid email format"),
-  validationsPassword,
-];
+const validationsEmail = body("email")
+  .trim()
+  .notEmpty()
+  .withMessage("Email can't be empty")
+  .escape() // Cross-Site Scripting vulnerability (XSS).
+  .isEmail()
+  .withMessage("Invalid email format");
 
-export { validations, validationsPassword };
+const validations = [validationsEmail, validationsPassword];
+
+export { validations, validationsPassword, validationsEmail };

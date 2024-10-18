@@ -23,4 +23,8 @@ export default class JWTHelper {
   ): void {
     return jwt.verify(token, this.secretKey, callback);
   }
+
+  public decode(token:string){
+    return jwt.decode(token)
+  }
 }

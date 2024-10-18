@@ -16,8 +16,13 @@ import signupV4 from "./routes/v4/signup";
 import profileV4 from "./routes/v4/profile";
 import userV4 from "./routes/v4/user";
 import googleCallbackV4 from "./routes/v4/googleCallback";
+import confirmUser from "./routes/global/confirmUser"
+import forgotPasswordMailer from "./routes/global/forgotPasswordMailer"
 
 const router = Router();
+
+router.use("/confirm", confirmUser)
+router.use("/", forgotPasswordMailer)
 
 router.use("/v1/", login);
 router.use("/v1/signup", signup);

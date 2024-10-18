@@ -5,7 +5,13 @@ const db: sqlite3.Database = new sqlite3.Database("./src/database/database.db");
 // Crear tablas iniciales o hacer otras configuraciones si es necesario
 db.serialize(() => {
   db.run(
-    "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, password TEXT, sessionId TEXT, last_password_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
+    `CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    email TEXT NOT NULL, 
+    password TEXT NOT NULL, 
+    sessionId TEXT,
+    confirmedEmail BOOLEAN DEFAULT FALSE, 
+    last_password_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
   );
 
   //trigger q actuliza la fecha de la columna last_password_update cuando se modifica la contraseña

@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/nodemailer": "^6.4.16",
     "bcrypt": "^5.1.1",
     "connect-sqlite3": "^0.9.15",
     "cookie-parser": "^1.4.6",
@@ -22,6 +23,7 @@
     "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "nanoid": "^3.3.4",
+    "nodemailer": "^6.9.15",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",

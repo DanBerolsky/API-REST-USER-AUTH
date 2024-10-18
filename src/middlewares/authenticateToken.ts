@@ -15,7 +15,7 @@ export default async function authenticateToken(
     return res.status(401).send({ message: "no hay token" }); // No hay token
   }
 
-  new JWTHelper().verify(token, async (err, decoded) => {
+  new JWTHelper(process.env.JWT_SECRET_KEY).verify(token, async (err, decoded) => {
     if (err) {
       return res.status(403).send({ message: "token inválido" }); // Token inválido
     }

@@ -1,8 +1,8 @@
-/* import nodemailer, { Transporter } from 'nodemailer';
+import nodemailer, { Transporter } from 'nodemailer';
 
 // Configuración del transportador
 const transporter: Transporter = nodemailer.createTransport({
-  host: 'smtp.example.com', // Cambia esto por el host de tu servicio de correo
+  host: 'smtp.gmail.com',  // Cambia esto por el host de tu servicio de correo
   port: 587, // O 465 para SSL
   secure: false, // true para 465, false para otros puertos
   auth: {
@@ -29,4 +29,4 @@ const sendEmail = async (to: string, subject: string, text: string, html?: strin
   }
 };
 
-export { sendEmail }; */
+export { sendEmail };

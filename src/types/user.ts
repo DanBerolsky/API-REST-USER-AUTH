@@ -4,6 +4,7 @@ export default interface User {
   password: string;
   token: string;
   sessionId: string;
+  confirmedEmail: boolean;
   last_password_update: string;
 }
 

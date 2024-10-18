@@ -23,17 +23,16 @@ deleteExpiredSessions();
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 
 // Aplica el rate limiter a todas las solicitudes
-app.use("/", apiLimiter(30));
+/* app.use("/", apiLimiter(30));
 app.use("/v1/signup", apiLimiter(2));
 app.use("/v2/signup", apiLimiter(2));
 app.use("/v3/signup", apiLimiter(2));
 app.use("/v4/signup", apiLimiter(2));
-
+ */
 //---rutas---
 app.use(routes);
 

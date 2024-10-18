@@ -14,7 +14,7 @@ async function login(req: Request, res: Response) {
 
   try {
     // Crear el token
-    const token = new JWTHelper().sign(payload, options as SignOptions);
+    const token = new JWTHelper(process.env.JWT_SECRET_KEY).sign(payload, options as SignOptions);
 
     // Establecer la cookie y redirigir
     res.cookie("token", token, cookieOptions as CookieOptions);

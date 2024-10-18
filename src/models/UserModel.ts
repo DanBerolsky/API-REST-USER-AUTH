@@ -1,5 +1,9 @@
 import db from "../database/dataBase";
+import { sendEmail } from "../helpers/mailerHelper";
 import User, { UserSession, UserSignup } from "../types/user";
+import getEmailHtml from "../public/email";
+import JWTHelper from "../helpers/JWTHelper";
+import { SignOptions } from "jsonwebtoken";
 
 export async function findBySessionId(id: string): Promise<User | null> {
   /*
@@ -14,7 +18,7 @@ export async function findBySessionId(id: string): Promise<User | null> {
       return found
       */
   try {
-    const result : User | null = await new Promise((resolve, reject) => {
+    const result: User | null = await new Promise((resolve, reject) => {
       db.get("SELECT * FROM users WHERE sessionId = ?", [id], (err, row) => {
         if (err) {
           console.error(err);
@@ -65,16 +69,28 @@ export async function addUser(newUser: UserSignup) {
       throw err;
     }
   }); */
+  const { email, password } = newUser;
   new Promise<void>((resolve, reject) => {
     db.run(
       "INSERT INTO users (email,password) VALUES (?,?)",
-      [newUser.email, newUser.password],
+      [email, password],
       function (err) {
         if (err) {
           console.error("Error inserting data:", err.message);
           return reject(err);
         } else {
           console.log(`Row(s) inserted`);
+          const token = new JWTHelper(process.env.JWT_SECRET_KEY).sign(
+            {email},
+            { expiresIn: "50m" } as SignOptions
+          );
+          const confirmUrl = `${process.env.BASE_URL}/confirm/:token=${token}`;
+          sendEmail(
+            newUser.email,
+            "nodemailer💚",
+            "¡Bienvenido",
+            getEmailHtml(confirmUrl)
+          );
           return resolve();
         }
       }
@@ -183,5 +199,22 @@ export async function deleteUser(email: string): Promise<void> {
         return resolve();
       }
     });
+  });
+}
+
+export async function confirmUser(email: string): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    db.run(
+      "UPDATE users SET confirmedEmail = TRUE WHERE email = ?",
+      [email],
+      (err) => {
+        if (err) {
+          console.error(err);
+          return reject(err);
+        }
+        console.log(`Row(s) update:`);
+        return resolve();
+      }
+    );
   });
 }
