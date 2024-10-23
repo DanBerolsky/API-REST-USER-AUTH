@@ -8,12 +8,12 @@ function logOut(req: Request, res: Response) {
       return res
         .status(500)
         .json({ message: MESSAGES.AUTH.ERROR.LOGOUT_ERROR });
-    res.redirect("/v4/login"); // Redirige al usuario para que vuelva a iniciar sesión
+    res.redirect("/v5/login"); // Redirige al usuario para que vuelva a iniciar sesión
   });
 }
 
 function getLogin(_req: Request, res: Response) {
-  res.send(loginVx("/v4/login", "Google"));
+  res.send(loginVx("/v5/login","Microsoft"))
 }
 
 export { getLogin, logOut };

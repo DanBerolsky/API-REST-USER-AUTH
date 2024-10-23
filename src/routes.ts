@@ -16,6 +16,11 @@ import signupV4 from "./routes/v4/signup";
 import profileV4 from "./routes/v4/profile";
 import userV4 from "./routes/v4/user";
 import googleCallbackV4 from "./routes/v4/googleCallback";
+import loginV5 from "./routes/v5/login";
+import signupV5 from "./routes/v5/signup";
+import profileV5 from "./routes/v5/profile";
+import userV5 from "./routes/v5/user";
+import microsoftCallbackV5 from "./routes/v5/microsoftCallback";
 import confirmUser from "./routes/global/confirmUser"
 import forgotPasswordMailer from "./routes/global/forgotPasswordMailer"
 
@@ -44,5 +49,11 @@ router.use("/v4/signup", signupV4);
 router.use("/v4/profile", profileV4);
 router.use("/v4/user", userV4);
 router.use("/v4/auth/google/callback", googleCallbackV4);
+
+router.use("/v5/", loginV5);
+router.use("/v5/signup", signupV5);
+router.use("/v5/profile", profileV5);
+router.use("/v5/user", userV5);
+router.use("/v5/auth/google/callback", microsoftCallbackV5);
 
 export default router;

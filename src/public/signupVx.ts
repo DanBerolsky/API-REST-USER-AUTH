@@ -1,9 +1,9 @@
-export default function html(action: string) {
-  if (action === "/v4/signup") {
+export default function html(action: string, strategy?: string) {
+  if (strategy) {
     return `<form action="/v4/signup" method="post">
     <h1>Sign Up</h1>
   
-      <button type="submit">google</button>
+      <button type="submit">${strategy}</button>
     </div>
   </form>`;
   }
