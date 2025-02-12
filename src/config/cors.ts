@@ -8,13 +8,7 @@ const allowedOrigins = [
 
 // Configuración dinámica de CORS
 export default cors({
-  origin: function (origin, callback) {
-    // Permitir solicitudes sin "origin" (como herramientas de testing tipo Postman)
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error("CORS no permitido desde este dominio"));
-  },
+  origin: "*",
   methods: ["GET", "POST", "OPTIONS"], // Métodos permitidos
   credentials: true, // Permitir envío de cookies si es necesario
 });
