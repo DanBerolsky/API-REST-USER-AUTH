@@ -9,6 +9,5 @@ const allowedOrigins = [
 // Configuración dinámica de CORS
 export default cors({
   origin: "*",
-  methods: ["GET", "POST", "OPTIONS"], // Métodos permitidos
   credentials: true, // Permitir envío de cookies si es necesario
 });
