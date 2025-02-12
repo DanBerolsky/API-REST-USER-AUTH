@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 3033;
 app.set('trust proxy', 1); // "1" significa confiar en el primer proxy (útil para Render, Heroku, etc.)
 
 // Aplica el middleware CORS a todas las rutas
-app.use(cors); 
+//app.use(cors); 
   
 // Aplica la configuración de middlewares
 setupMiddlewares(app); // Aquí se aplica la configuración de middlewares
