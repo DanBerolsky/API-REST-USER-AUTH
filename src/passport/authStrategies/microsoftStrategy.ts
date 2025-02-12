@@ -11,7 +11,6 @@ export default new MicrosoftStrategy(
   },
   async (accessToken:any, refreshToken:any, profile:Profile, done:DoneCallback)=>{
     // Aquí puedes manejar el perfil del usuario
-    console.log(profile);
     return done(null, profile);
   }
 );

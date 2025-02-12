@@ -18,7 +18,7 @@ async function signupAction(req: Request, res: Response) {
       return res.status(409).json({ error: MESSAGES.AUTH.ERROR.EMAIL_TAKEN }); // Mensaje de error si el email ya está en uso
     }
   } catch (error) {
-    console.error("Error during signup:", error);
+    console.error("Error during signup: ", error);
     return res.status(500).json({ error: MESSAGES.GENERAL.ERROR.INTERNAL_SERVER_ERROR }); // Mensaje de error interno
   }
 }

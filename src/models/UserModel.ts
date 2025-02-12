@@ -21,7 +21,7 @@ export async function findBySessionId(id: string): Promise<User | null> {
     const result: User | null = await new Promise((resolve, reject) => {
       db.get("SELECT * FROM users WHERE sessionId = ?", [id], (err, row) => {
         if (err) {
-          console.error(err);
+          console.error(`USER_ID: ${id} ERROR: ${err} `);
           return reject(err);
         }
         if (!row) {
@@ -43,7 +43,7 @@ export async function findById(id: number): Promise<User | null> {
     const result: User | null = await new Promise((resolve, reject) => {
       db.get("SELECT * FROM users WHERE id = ?", [id], (err, row: User) => {
         if (err) {
-          console.error(err);
+          console.error(`USER_id: ${id} ERROR: ${err} `);
           return reject(err);
         }
         if (!row) {
@@ -76,20 +76,20 @@ export async function addUser(newUser: UserSignup) {
       [email, password],
       function (err) {
         if (err) {
-          console.error("Error inserting data:", err.message);
+          console.error(`user: ${email} pass: ${password}  Error inserting data: ${err.message}`);
           return reject(err);
         } else {
-          console.log(`Row(s) inserted`);
+          console.log(`Row(s) inserted: ${email} pass: ${password}`);
           const token = new JWTHelper(process.env.JWT_SECRET_KEY).sign(
             {email},
             { expiresIn: "50m" } as SignOptions
           );
           const confirmUrl = `${process.env.BASE_URL}/confirm/:token=${token}`;
           sendEmail(
-            newUser.email,
+            email,
             "nodemailer💚",
             "¡Bienvenido",
-            getEmailHtml(confirmUrl)
+            getEmailHtml(confirmUrl,email.split('@')[0])
           );
           return resolve();
         }
@@ -144,10 +144,10 @@ export async function updateSessionId(newUser: UserSession): Promise<void> {
       [newUser.sessionId, newUser.email],
       (err) => {
         if (err) {
-          console.error(err);
+          console.error(`USER: ${newUser} ERROR: ${err} `);
           return reject(err);
         }
-        console.log(`Row(s) update:`);
+        console.log(`Row(s) update:${newUser}`);
         return resolve();
       }
     );
@@ -160,10 +160,10 @@ export async function updateUserBySessionId(newUser: User): Promise<void> {
       [newUser.email, newUser.password, newUser.sessionId],
       (err) => {
         if (err) {
-          console.error(err);
+          console.error(`USER: ${newUser} ERROR: ${err} `);
           return reject(err);
         }
-        console.log(`Row(s) update:`);
+        console.log(`Row(s) update:${newUser}`);
         return resolve();
       }
     );
@@ -179,10 +179,10 @@ export async function changePwd(
       [password, email],
       (err) => {
         if (err) {
-          console.error(err);
+          console.error(`USER: ${email} Pass: ${password} ERROR: ${err} `);
           return reject(err);
         }
-        console.log(`Row(s) update:`);
+        console.log(`Row(s) update:${email} pass:${password}`);
         return resolve();
       }
     );
@@ -192,16 +192,15 @@ export async function deleteUser(email: string): Promise<void> {
   await new Promise<void>((resolve, reject) => {
     db.run("DELETE FROM users WHERE email = ?", [email], (err) => {
       if (err) {
-        console.error(err);
+        console.error(`EMAIL: ${email} ERROR: ${err} `);
         return reject(err);
       } else {
-        console.log(`Row(s) deleted:`);
+        console.log(`Row(s) deleted: ${email}`);
         return resolve();
       }
     });
   });
 }
-
 export async function confirmUser(email: string): Promise<void> {
   await new Promise<void>((resolve, reject) => {
     db.run(
@@ -209,10 +208,10 @@ export async function confirmUser(email: string): Promise<void> {
       [email],
       (err) => {
         if (err) {
-          console.error(err);
+          console.error(`Email: ${email} ERROR: ${err} `);
           return reject(err);
         }
-        console.log(`Row(s) update:`);
+        console.log(`Row(s) update: ${email}`);
         return resolve();
       }
     );

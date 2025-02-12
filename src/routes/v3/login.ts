@@ -2,10 +2,11 @@ import express from "express";
 import { login, logOut, getLogin } from "./controllers/loginController";
 import validationErrorHandler from "../../middlewares/validationMiddleware";
 import { validations } from "../../validators/authValidator";
+import authenticateUser from "../../middlewares/authenticateUser";
 
 const router = express.Router();
 
-router.post("/login", validations, validationErrorHandler, login);
+router.post("/login", validations, validationErrorHandler, authenticateUser, login);
 
 router.get("/logout", logOut);
 

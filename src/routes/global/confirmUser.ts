@@ -9,10 +9,10 @@ router.get("/:token",(req,res)=>{
     const userToken = req.params.token.split('=')[1]
     const {email} = new JWTHelper().decode(userToken) as {email:string}
     if (!email) {
-        return res.send(402)
+        return res.sendStatus(402)
     }
     confirmUser(email)
-    return res.send(200)
+    return res.sendStatus(200)
 })
 
 export default router

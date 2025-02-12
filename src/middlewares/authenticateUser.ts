@@ -13,7 +13,7 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
     if (!found) {
       console.error("ERROR: User not found");
       return res.status(401).send({ message: MESSAGES.AUTH.ERROR.USER_NOT_FOUND });
-    }
+    } 
     if (!found.confirmedEmail) {
       console.error("ERROR: Email not confirmed");
       return res.status(401).send({ message: MESSAGES.AUTH.ERROR.EMAIL_NOT_CONFIRMED });

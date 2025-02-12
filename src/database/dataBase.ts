@@ -11,7 +11,8 @@ db.serialize(() => {
     password TEXT NOT NULL, 
     sessionId TEXT,
     confirmedEmail BOOLEAN DEFAULT FALSE, 
-    last_password_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
+    last_password_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
   );
 
   //trigger q actuliza la fecha de la columna last_password_update cuando se modifica la contraseña

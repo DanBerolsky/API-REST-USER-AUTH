@@ -21,39 +21,43 @@ import signupV5 from "./routes/v5/signup";
 import profileV5 from "./routes/v5/profile";
 import userV5 from "./routes/v5/user";
 import microsoftCallbackV5 from "./routes/v5/microsoftCallback";
-import confirmUser from "./routes/global/confirmUser"
-import forgotPasswordMailer from "./routes/global/forgotPasswordMailer"
+import confirmUser from "./routes/global/confirmUser";
+import forgotPasswordMailer from "./routes/global/forgotPasswordMailer";
+import adminGetData from "./routes/global/admin";
+import verifyCaptcha from "./middlewares/global/recaptcha/verifyCaptcha";
 
 const router = Router();
 
-router.use("/confirm", confirmUser)
-router.use("/", forgotPasswordMailer)
+router.use("/confirm", confirmUser);
+router.use("/", verifyCaptcha, forgotPasswordMailer);
 
-router.use("/v1/", login);
-router.use("/v1/signup", signup);
+router.use("/v1/", verifyCaptcha, login);
+router.use("/v1/signup", verifyCaptcha, signup);
 router.use("/v1/profile", profile);
 router.use("/v1/user", user);
 
-router.use("/v2/", loginV2);
-router.use("/v2/signup", signupV2);
+router.use("/v2/", verifyCaptcha, loginV2);
+router.use("/v2/signup", verifyCaptcha, signupV2);
 router.use("/v2/profile", profileV2);
 router.use("/v2/user", userV2);
 
-router.use("/v3/", loginV3);
-router.use("/v3/signup", signupV3);
+router.use("/v3/", verifyCaptcha, loginV3);
+router.use("/v3/signup", verifyCaptcha, signupV3);
 router.use("/v3/profile", profileV3);
 router.use("/v3/user", userV3);
 
-router.use("/v4/", loginV4);
-router.use("/v4/signup", signupV4);
+router.use("/v4/", verifyCaptcha, loginV4);
+router.use("/v4/signup", verifyCaptcha, signupV4);
 router.use("/v4/profile", profileV4);
 router.use("/v4/user", userV4);
 router.use("/v4/auth/google/callback", googleCallbackV4);
 
-router.use("/v5/", loginV5);
-router.use("/v5/signup", signupV5);
+router.use("/v5/", verifyCaptcha, loginV5);
+router.use("/v5/signup", verifyCaptcha, signupV5);
 router.use("/v5/profile", profileV5);
 router.use("/v5/user", userV5);
-router.use("/v5/auth/google/callback", microsoftCallbackV5);
+router.use("/v5/microsoft/callback", microsoftCallbackV5);
+
+router.use("/admin/viewdata", adminGetData);
 
 export default router;
