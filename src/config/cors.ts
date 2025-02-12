@@ -3,7 +3,7 @@ import cors from "cors";
 // Lista de dominios permitidos
 const allowedOrigins = [
   "https://mi-front.vercel.app", // Dominio de producción (puedes añadir más si necesitas)
-  "http://localhost:4321", // Desarrollo local de Astro
+  "*", // Desarrollo local de Astro
 ];
 
 // Configuración dinámica de CORS
