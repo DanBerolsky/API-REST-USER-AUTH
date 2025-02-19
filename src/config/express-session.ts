@@ -9,13 +9,14 @@ const sessionConfig = {
     db: "database.db", // Nombre del archivo de base de datos
     dir: "./src/database/", // Directorio donde se almacenará la base de datos
   }) as any,
-  secret: "keyboard cat", // Cambia esto a un valor más seguro en producción
+  secret: process.env.SESSION_SECRET || "keyboard cat", // Usa una variable de entorno para mayor seguridad
   resave: false, // No volver a guardar la sesión si no ha cambiado
-  saveUninitialized: true, // guarda sesiones no inicializadas
+  saveUninitialized: true, // Guarda sesiones no inicializadas
   cookie: {
-    secure: false, // Cambia a true si usas HTTPS
-    sameSite: "lax",
-    maxAge: 20000, // Tiempo de vida de la cookie (1 minuto)
+    secure: process.env.COOKIE_SECURE === "true", // Activa secure si la variable de entorno lo indica
+    httpOnly: process.env.COOKIE_HTTPONLY !== "false", // Activa httpOnly por defecto, pero se puede desactivar si es necesario
+    sameSite: process.env.COOKIE_SAMESITE || "lax",
+    maxAge: parseInt(process.env.COOKIE_MAXAGE || "20000"), // Usa variable de entorno si está definida
   },
 };
 

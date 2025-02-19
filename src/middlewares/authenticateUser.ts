@@ -26,8 +26,9 @@ async function authenticate(req: Request, res: Response, next: NextFunction) {
         return res.status(401).send({ message: MESSAGES.AUTH.ERROR.INCORRECT_PASSWORD });
       }
 
-      const { last_password_update } = found;
-      req.user = { email, last_password_update };
+      //const { last_password_update } = found;
+      //req.user = { email, last_password_update };
+      req.user = found;
       return next();
     } catch (error) {
       console.error("ERROR: Bcrypt error", error);

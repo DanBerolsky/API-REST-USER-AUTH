@@ -11,34 +11,33 @@ import path from "path";
 import deleteUserAuto from "./database/deleteUsersAuto";
 import cors from "./config/cors"; // módulo de CORS
 
-
 const app = express();
 const PORT = process.env.PORT || 3033;
 
 // 🛠️ Configurar Express para confiar en el proxy
-app.set('trust proxy', 1); // "1" significa confiar en el primer proxy (útil para Render, Heroku, etc.)
+//app.set('trust proxy', 1); // "1" significa confiar en el primer proxy (útil para Render, Heroku, etc.)
 
 // Aplica el middleware CORS a todas las rutas
-app.use(cors); 
-  
+app.use(cors);
+
 // Aplica la configuración de middlewares
 setupMiddlewares(app); // Aquí se aplica la configuración de middlewares
-
+ 
 // configura express-session, para q almacene la información de la sesión del usuario en SQLite
 app.use(sessionMiddleware);
 deleteExpiredSessions();
-deleteUserAuto()
+deleteUserAuto();
 
 // Inicializar Passport
-app.use(passport.initialize());
+ app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.static(path.join(__dirname, "public")));
+ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 
 // Aplica el rate limiter a todas las solicitudes
-app.use("/", apiLimiter(30));/* 
-app.use("/v1/signup", apiLimiter(2));
+//app.use("/", apiLimiter(30));
+/*app.use("/v1/signup", apiLimiter(2));
 app.use("/v2/signup", apiLimiter(2));
 app.use("/v3/signup", apiLimiter(2));
 app.use("/v4/signup", apiLimiter(2)); */
@@ -55,5 +54,6 @@ app.use((err: Errback, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(PORT, () => {
-  console.log("http://localhost:" + PORT);
+  console.log("🚀🚀🚀 http://localhost:" + PORT);
 });
+ 

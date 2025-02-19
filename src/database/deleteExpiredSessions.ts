@@ -1,7 +1,9 @@
 import db from "./dataBase";
 export default function deleteExpiredSessions() {
+  const intervalTime = parseInt(process.env.SESSION_CLEANUP_INTERVAL || "300000"); // 5 minutos por defecto
+
     return setInterval(async () => {
-    console.log("deleteExpiredSessions");
+    console.warn("deleteExpiredSessions");
     await db.run("DELETE FROM sessions WHERE expired < CURRENT_TIMESTAMP");
-  }, 5 * 60 * 1000); // Cada 5 minutos
+  }, intervalTime); // Cada 5 minutos
 }

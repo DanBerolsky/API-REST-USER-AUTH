@@ -2,14 +2,14 @@ import { DoneCallback } from "passport";
 import User from "../types/user";
 import { findById } from "../models/UserModel";
 
-// Función de serialización del usuario
+// Función de serialización del usuario(despues de que el usuario se autentica)
 export function serialize(user: { id?: any }, done: DoneCallback) {
   console.log("ser");
 
   return done(null, user.id);
 }
 
-// Función de deserialización del usuario
+// Función de deserialización del usuario(en cada solicitud que el usuario haga después de haberse autenticado)
 export async function deserialize(id: any, done: DoneCallback) {
   console.log("des");
 

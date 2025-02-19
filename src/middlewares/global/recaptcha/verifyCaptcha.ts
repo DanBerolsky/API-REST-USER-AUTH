@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY; // Clave secreta desde las variables de entorno
+const DISABLE_CAPTCHA = process.env.DISABLE_CAPTCHA === "true"; // Convierte a booleano
+
 
 // Middleware para verificar reCAPTCHA v2
 export default async function verifyCaptcha(
@@ -8,12 +10,21 @@ export default async function verifyCaptcha(
   res: Response,
   next: NextFunction
 ) {
+
+  // 🚀 Si CAPTCHA está desactivado, pasa directamente al siguiente middleware
+  if (DISABLE_CAPTCHA) {
+    console.log("⚠️ CAPTCHA deshabilitado, omitiendo verificación.");
+    return next();
+  }
+
   const token = req.headers["x-recaptcha-token"]; // Asegúrate de que el token viene en este header
 
   if (!token) {
     return res
       .status(400)
-      .json({ success: false, message: "Token de CAPTCHA no proporcionado." });
+      .json([
+        { field: "captcha", error: "Token de CAPTCHA no proporcionado." },
+      ]);
   }
 
   try {
@@ -30,15 +41,17 @@ export default async function verifyCaptcha(
     } else {
       return res
         .status(400)
-        .json({ success: false, message: "Verificación del CAPTCHA fallida." });
+        .json([
+          { field: "captcha", error: "Verificación del CAPTCHA fallida." },
+        ]);
     }
   } catch (error) {
     console.error("Error al verificar el CAPTCHA:", error);
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error al procesar la verificación del CAPTCHA.",
-      });
+    return res.status(500).json([
+      {
+        field: "captcha",
+        error: "Error al procesar la verificación del CAPTCHA.",
+      },
+    ]);
   }
 }

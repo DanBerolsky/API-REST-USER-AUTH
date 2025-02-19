@@ -1,19 +1,25 @@
 import db from "./dataBase";
 
-export default async function deleteUserAuto() {
-  // Calculamos la fecha y hora hace 10 minutos
-  setInterval((async ()=>{
-    const tenMinutesAgo = new Date(Date.now() - 1 * 60 * 1000).toISOString();
-    try {
-      // Ejecutamos la consulta para eliminar usuarios creados hace más de 10 minutos
-      await db.run("DELETE FROM users WHERE created_at < ?", [tenMinutesAgo]);
-      console.log(
-        "Usuarios eliminados si superaban los 10 minutos desde su creación."
-      );
-    } catch (error) {
-      console.error('Error al eliminar usuarios:', error);
-    }
+export default function deleteUserAuto() {
+  if (process.env.DISABLE_USER_CLEANUP === "true") {
+    console.log("🚀 Limpieza automática de usuarios desactivada.");
+    return; // No ejecuta el intervalo
   }
-),420000); // Ejecutar cada 7 minutos (420,000 ms)
+
+  const intervalTime = parseInt(process.env.USER_CLEANUP_INTERVAL || "420000"); // 7 minutos por defecto
+  const userExpirationTime = parseInt(
+    process.env.USER_EXPIRATION_TIME || "600000"
+  ); // 10 minutos por defecto
+
+  setInterval(async () => {
+    const expirationTime = new Date(
+      Date.now() - userExpirationTime
+    ).toISOString();
+    try {
+      await db.run("DELETE FROM users WHERE created_at < ?", [expirationTime]);
+      console.log("Usuarios eliminados si superaban el tiempo de expiración.");
+    } catch (error) {
+      console.error("Error al eliminar usuarios:", error);
+    }
+  }, intervalTime);
 }
- 

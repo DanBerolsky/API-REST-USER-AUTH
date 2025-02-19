@@ -12,7 +12,8 @@ function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
     console.log("Usuario autenticado, continuando...");
     return next(); // El usuario está autenticado, continúa con la solicitud
   }
-  res.status(401).json({ message: "Unauthorized" }); // El usuario no está autenticado
+  //res.status(401).json({ message: "Unauthorized" }); // El usuario no está autenticado
+  res.status(200).json({ message: "Unauthorized" }); // El usuario no está autenticado
 }
 
 export default ensureAuthenticated;

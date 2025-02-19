@@ -8,6 +8,8 @@ const allowedOrigins = [
 
 // Configuración dinámica de CORS
 export default cors({
-  origin: "*",
-  credentials: true, // Permitir envío de cookies si es necesario
+  origin: process.env.CORS_ORIGIN,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "X-Recaptcha-Token"],
+  credentials: true, // Si necesitas enviar cookies o encabezados de autenticación
 });

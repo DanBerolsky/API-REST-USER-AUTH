@@ -5,19 +5,20 @@ import bcrypt from "bcrypt";
 import { changePwd, findByEmail } from "../../../models/UserModel";
 import { UserEmail } from "../../../types/user";
 import { Request, Response } from "express";
+import PasswordResetSuccess from "../../../public/passwordResetSuccess";
 
 export async function forgotPasswordController(req: Request, res: Response) {
   const { email } = req.body;
 
   //existe el usuario?
   try {
-    const user = await findByEmail(email)
+    const user = await findByEmail(email);
     //sino existe no envia correo
     if (!user) {
-      return res.send(200)
+      return res.send(200);
     }
   } catch (error) {
-    return res.send(500)
+    return res.send(500);
   }
 
   const token = new JWTHelper(process.env.JWT_SECRET_KEY).sign(
@@ -27,9 +28,9 @@ export async function forgotPasswordController(req: Request, res: Response) {
   const resetPwdUrl = `${process.env.BASE_URL}/reset-password/:token=${token}`;
   try {
     sendEmail(email, "forgot-password", ``, forgotPwdEmail(resetPwdUrl));
-    return res.send(200);
+    return res.sendStatus(200);
   } catch (error) {
-    return res.send(500);
+    return res.sendStatus(500);
   }
 }
 
@@ -42,18 +43,19 @@ export async function resetPasswordController(req: Request, res: Response) {
     token,
     async (err, decoded) => {
       if (err) {
-        return res.status(403).send({ message: "token inválido" }); // Token inválido
+        return res.sendStatus(403).send({ message: "token inválido" }); // Token inválido
       }
       if (!decoded) {
-        return res.status(403).send({ message: "token inválido" }); // Token inválido
+        return res.sendStatus(403).send({ message: "token inválido" }); // Token inválido
       }
       const { email } = decoded as UserEmail;
       try {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         await changePwd(email, hashedPassword);
-        return res.send(200);
+        const frontUrl = process.env.SUCCESS_REDIRECT_URL;
+        return res.send(PasswordResetSuccess(frontUrl));
       } catch (error) {
-        return res.send(500);
+        return res.sendStatus(500);
       }
     }
   );

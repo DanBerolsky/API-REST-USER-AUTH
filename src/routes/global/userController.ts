@@ -7,7 +7,8 @@ async function deleteUserAction(req: Request, res: Response) {
   const { email } = req.user as UserEmail;
   try {
     await deleteUser(email);
-    res.redirect("/v1/logout");
+    //res.redirect("/v1/logout");
+    res.send()
   } catch (error) {
     res.sendStatus(500);
   }

@@ -7,6 +7,8 @@ import signupVx from "../../../public/signupVx";
 
 async function signupAction(req: Request, res: Response) {
   const { email, password } = req.body as UserSignup;
+  console.log(email);
+  console.log(password);
   
   try {
     if (!(await findByEmail(email))) {

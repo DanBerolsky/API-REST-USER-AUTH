@@ -4,7 +4,7 @@ import fetchUserOrRegister from "../userService";
 
 const clientID = process.env.GOOGLE_CLIENT_ID as string;
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET as string;
-const callbackURL = process.env.GOOGLE_CALLBACK_UR as string;
+const callbackURL = process.env.GOOGLE_CALLBACK_URL as string;
 
 export default new GoogleStrategy(
   {
