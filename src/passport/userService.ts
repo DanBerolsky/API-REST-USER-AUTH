@@ -5,7 +5,7 @@ export default async function fetchUserOrRegister(email: string, done:any) {
   try {
     let user: User | UserSignup | null = await findByEmail(email);
     if (!user) {
-      user = { email: email, password: "" } as UserSignup;
+      user = { email: email, password: "", confirmedEmail: true } as User;
       await addUser(user);
       user = await findByEmail(email);
     }
