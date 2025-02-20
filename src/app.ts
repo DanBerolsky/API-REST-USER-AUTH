@@ -22,25 +22,29 @@ app.use(cors);
 
 // Aplica la configuración de middlewares
 setupMiddlewares(app); // Aquí se aplica la configuración de middlewares
- 
+
 // configura express-session, para q almacene la información de la sesión del usuario en SQLite
 app.use(sessionMiddleware);
 deleteExpiredSessions();
 deleteUserAuto();
 
 // Inicializar Passport
- app.use(passport.initialize());
+app.use(passport.initialize());
 app.use(passport.session());
 
- app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 
-// Aplica el rate limiter a todas las solicitudes
-//app.use("/", apiLimiter(30));
-/*app.use("/v1/signup", apiLimiter(2));
-app.use("/v2/signup", apiLimiter(2));
-app.use("/v3/signup", apiLimiter(2));
-app.use("/v4/signup", apiLimiter(2)); */
+// Convertir las variables de entorno a números y usarlas
+const apiLimitDefault = Number(process.env.API_LIMIT_DEFAULT) || 30;
+const apiLimitSingup = Number(process.env.API_LIMIT_SIGNUP) || 2;
+
+// Usar las variables de entorno convertidas
+app.use("/", apiLimiter(apiLimitDefault)); // Usar el valor de API_LIMIT_DEFAULT
+app.use("/v1/signup", apiLimiter(apiLimitSingup)); // Usar el valor de API_LIMIT_V1
+app.use("/v2/signup", apiLimiter(apiLimitSingup)); // Usar el valor de API_LIMIT_V2
+app.use("/v3/signup", apiLimiter(apiLimitSingup)); // Usar el valor de API_LIMIT_V3
+app.use("/v4/signup", apiLimiter(apiLimitSingup)); // Usar el valor de API_LIMIT_V4
 
 //---rutas---
 app.use(routes);
@@ -56,4 +60,3 @@ app.use((err: Errback, req: Request, res: Response, next: NextFunction) => {
 app.listen(PORT, () => {
   console.log("🚀🚀🚀 http://localhost:" + PORT);
 });
- 
