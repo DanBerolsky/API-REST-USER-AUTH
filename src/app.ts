@@ -15,7 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 3033;
 
 // 🛠️ Configurar Express para confiar en el proxy
-//app.set('trust proxy', 1); // "1" significa confiar en el primer proxy (útil para Render, Heroku, etc.)
+app.set('trust proxy', 1); // "1" significa confiar en el primer proxy (útil para Render, Heroku, etc.)
 
 // Aplica el middleware CORS a todas las rutas
 app.use(cors);
