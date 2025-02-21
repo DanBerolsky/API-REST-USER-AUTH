@@ -87,8 +87,8 @@ export async function addUser(newUser: UserSignup) {
           const confirmUrl = `${process.env.BASE_URL}/confirm/:token=${token}`;
           sendEmail(
             email,
-            "nodemailer💚",
-            "¡Bienvenido",
+            "Confirma tu cuenta ⚡",
+            "",
             getEmailHtml(confirmUrl,email.split('@')[0])
           );
           return resolve();

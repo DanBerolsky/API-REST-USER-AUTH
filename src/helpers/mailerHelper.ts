@@ -14,7 +14,7 @@ const transporter: Transporter = nodemailer.createTransport({
 // Función para enviar un correo
 const sendEmail = async (to: string, subject: string, text: string, html?: string): Promise<void> => {
   const mailOptions = {
-    from: `"Nombre Remitente" <${process.env.EMAIL_USER}>`, // Remitente
+    from: `"Backend Demo ⚡" <${process.env.EMAIL_USER}>`, // Remitente
     to, // Destinatario
     subject, // Asunto
     text, // Texto plano

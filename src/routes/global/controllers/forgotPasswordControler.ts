@@ -27,7 +27,7 @@ export async function forgotPasswordController(req: Request, res: Response) {
   );
   const resetPwdUrl = `${process.env.BASE_URL}/reset-password/:token=${token}`;
   try {
-    sendEmail(email, "forgot-password", ``, forgotPwdEmail(resetPwdUrl));
+    sendEmail(email, "Restablece tu contraseña ⚡", ``, forgotPwdEmail(resetPwdUrl));
     return res.sendStatus(200);
   } catch (error) {
     return res.sendStatus(500);
