@@ -15,10 +15,10 @@ export async function forgotPasswordController(req: Request, res: Response) {
     const user = await findByEmail(email);
     //sino existe no envia correo
     if (!user) {
-      return res.send(200);
+      return res.sendStatus(404);
     }
   } catch (error) {
-    return res.send(500);
+    return res.sendStatus(500);
   }
 
   const token = new JWTHelper(process.env.JWT_SECRET_KEY).sign(
